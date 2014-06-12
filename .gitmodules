@@ -1,0 +1,9 @@
+[submodule "bundle/nerdtree-master"]
+	path = bundle/nerdtree-master
+	url = https://github.com/scrooloose/nerdtree
+[submodule "bundle/vim-monokai-master"]
+	path = bundle/vim-monokai-master
+	url = https://github.com/sickill/vim-monokai
+[submodule "bundle/vimtweak"]
+	path = bundle/vimtweak
+	url = https://github.com/mattn/vimtweak
