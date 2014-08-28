@@ -25,25 +25,11 @@ set wrap
 set autoindent
 set number
 
-"Keyboard movement
-nnoremap j gj
-nnoremap k gk
-nnoremap h <C-h>
-nnoremap l <space>
-
 "Tab behaviour
 set tabstop=8 
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-
-"Exit from insert mode using jk 
-inoremap jk <ESC>
-
-"Remove F1
-inoremap <F1> <ESC>
-nnoremap <F1> <ESC>
-vnoremap <F1> <ESC>
 
 "Disable toolbar, menubar, and scrollbar
 set guioptions-=T
@@ -58,8 +44,37 @@ set lines=999
 set columns=999
 au GUIEnter * simalt ~x
 
+"########################
+"Keyboard mapping
+"########################
 "Set leader key
 let mapleader=","
+
+"Keyboard movement
+nnoremap j gj
+nnoremap k gk
+nnoremap h <C-h>
+nnoremap l <space>
+
+"Easier to find pair with tab
+nnoremap <Tab> %
+vnoremap <Tab> %
+
+"Easier to type command
+nnoremap ; :
+vnoremap ; :
+
+"Dealing with many files
+set path=**
+nnoremap <Leader>f :find *
+nnoremap <Leader>s :sfind *
+nnoremap <Leader>v :vert sfind *
+nnoremap <leader>F :find <C-R>=expand('%:h').'/*'<CR>
+nnoremap <leader>S :sfind <C-R>=expand('%:h').'/*'<CR>
+nnoremap <leader>V :vert sfind <C-R>=expand('%:h').'/*'<CR>
+
+"Open recent buffer
+nnoremap gb :ls<CR>:b<Space>
 
 "########################
 "Plugin settings
@@ -93,3 +108,8 @@ set guifont=Consolas:h11
 
 "Transparency
 autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
+
+"Disable error beeping and flashing
+if has("gui_running")
+    autocmd GUIEnter * set vb t_vb=
+endif
