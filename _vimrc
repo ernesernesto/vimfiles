@@ -56,6 +56,14 @@ nnoremap k gk
 nnoremap h <C-h>
 nnoremap l <space>
 
+"Exit from insert mode using jk
+inoremap jk <ESC>
+
+"Remove F1
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
 "Easier to find pair with tab
 nnoremap <Tab> %
 vnoremap <Tab> %
@@ -66,15 +74,18 @@ vnoremap ; :
 
 "Dealing with many files
 set path=**
-nnoremap <Leader>f :find *
-nnoremap <Leader>s :sfind *
-nnoremap <Leader>v :vert sfind *
+nnoremap <leader>f :find *
+nnoremap <leader>s :sfind *
+nnoremap <leader>v :vert sfind *
 nnoremap <leader>F :find <C-R>=expand('%:h').'/*'<CR>
 nnoremap <leader>S :sfind <C-R>=expand('%:h').'/*'<CR>
 nnoremap <leader>V :vert sfind <C-R>=expand('%:h').'/*'<CR>
 
 "Open recent buffer
 nnoremap gb :ls<CR>:b<Space>
+
+"Quick edit vimrc 
+:nnoremap <leader>ev :split $MYVIMRC<CR>
 
 "########################
 "Plugin settings
@@ -97,6 +108,20 @@ fun! MatchCaseTag()
    endtry
 endfun
 
+"Airline
+"Symbols remapping for Airline
+let g:airline_symbols = {}
+let g:airline_left_sep = "\u2b80" 
+let g:airline_left_alt_sep = "\u2b81"
+let g:airline_right_sep = "\u2b82"
+let g:airline_right_alt_sep = "\u2b83"
+let g:airline_symbols.branch = "\u2b60"
+let g:airline_symbols.readonly = "\u2b64"
+let g:airline_symbols.linenr = "\u2b61"
+
+"Airline won't appear until creating new split
+set laststatus=2
+
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 "########################
@@ -104,7 +129,7 @@ nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 "########################
 colorscheme monokai 
 
-set guifont=Consolas:h11
+set guifont=Consolas_for_Powerline_FixedD:h11
 
 "Transparency
 autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
