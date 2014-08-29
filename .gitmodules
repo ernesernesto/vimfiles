@@ -7,3 +7,6 @@
 [submodule "bundle/vimtweak"]
 	path = bundle/vimtweak
 	url = https://github.com/mattn/vimtweak
+[submodule "bundle/vim-airline"]
+	path = bundle/vim-airline
+	url = https://github.com/bling/vim-airline
