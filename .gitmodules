@@ -10,3 +10,10 @@
 [submodule "bundle/vim-airline"]
 	path = bundle/vim-airline
 	url = https://github.com/bling/vim-airline
+[submodule "bundle/ctrlp.vim-master"]
+	path = bundle/ctrlp.vim-master
+	url = https://github.com/kien/ctrlp.vim
+[submodule "bundle/vim-fugitive-master"]
+	path = bundle/vim-fugitive-master
+	url = https://github.com/tpope/vim-fugitive
+		
