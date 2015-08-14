@@ -9,6 +9,9 @@ set nocompatible
 set encoding=utf-8
 syntax on
 
+"use system clipboard as default buffer
+set clipboard=unnamed
+
 "Don't clutter filesystem
 set nobackup
 set noswapfile
@@ -26,10 +29,13 @@ set autoindent
 set number
 
 "Tab behaviour
-set tabstop=8 
+set tabstop=4 
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+
+"backspace behavior
+set backspace=indent,eol,start
 
 "Disable toolbar, menubar, and scrollbar
 set guioptions-=T
@@ -43,6 +49,8 @@ set guioptions-=b
 set lines=999
 set columns=999
 au GUIEnter * simalt ~x
+
+set switchbuf=useopen,split
 
 "########################
 "Keyboard mapping
@@ -64,10 +72,6 @@ inoremap <F1> <ESC>
 nnoremap <F1> <ESC>
 vnoremap <F1> <ESC>
 
-"Easier to find pair with tab
-nnoremap <Tab> %
-vnoremap <Tab> %
-
 "Easier to type command
 nnoremap ; :
 vnoremap ; :
@@ -86,6 +90,9 @@ nnoremap gb :ls<CR>:b<Space>
 
 "Quick edit vimrc 
 :nnoremap <leader>ev :split $MYVIMRC<CR>
+
+"Quick switch between .h and .cpp
+map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 
 "########################
 "Plugin settings
@@ -124,15 +131,21 @@ set laststatus=2
 
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
+"Ag
+nnoremap <C-S-F> :Ag 
+
+"NerdCommenter
+map <C-K><C-K> <leader>ci
+
 "########################
 "Color & Font settings
 "########################
 colorscheme monokai 
 
-set guifont=Consolas_for_Powerline_FixedD:h11
+set guifont=Consolas_for_Powerline_FixedD:h10
 
 "Transparency
-autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
+"autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
 
 "Disable error beeping and flashing
 if has("gui_running")
