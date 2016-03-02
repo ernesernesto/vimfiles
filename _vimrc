@@ -26,7 +26,7 @@ set ruler
 set scrolloff=3
 set wrap
 set autoindent
-set number
+set nonumber
 
 "Tab behaviour
 set tabstop=4 
@@ -64,6 +64,11 @@ nnoremap k gk
 nnoremap h <C-h>
 nnoremap l <space>
 
+nnoremap [ {
+nnoremap ] }
+
+nnoremap <S-y> y%
+
 "Exit from insert mode using jk
 inoremap jk <ESC>
 
@@ -76,20 +81,11 @@ vnoremap <F1> <ESC>
 nnoremap ; :
 vnoremap ; :
 
-"Dealing with many files
-set path=**
-nnoremap <leader>f :find *
-nnoremap <leader>s :sfind *
-nnoremap <leader>v :vert sfind *
-nnoremap <leader>F :find <C-R>=expand('%:h').'/*'<CR>
-nnoremap <leader>S :sfind <C-R>=expand('%:h').'/*'<CR>
-nnoremap <leader>V :vert sfind <C-R>=expand('%:h').'/*'<CR>
-
 "Open recent buffer
 nnoremap gb :ls<CR>:b<Space>
 
 "Quick edit vimrc 
-:nnoremap <leader>ev :split $MYVIMRC<CR>
+:nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 
 "Quick switch between .h and .cpp
 map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
@@ -132,7 +128,7 @@ set laststatus=2
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 "Ag
-nnoremap <C-S-F> :Ag 
+nnoremap <leader>f :Ag -i -Q 
 
 "NerdCommenter
 map <C-K><C-K> <leader>ci
@@ -142,7 +138,7 @@ map <C-K><C-K> <leader>ci
 "########################
 colorscheme monokai 
 
-set guifont=Consolas_for_Powerline_FixedD:h10
+set guifont=Consolas_for_Powerline_FixedD
 
 "Transparency
 "autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
@@ -151,3 +147,34 @@ set guifont=Consolas_for_Powerline_FixedD:h10
 if has("gui_running")
     autocmd GUIEnter * set vb t_vb=
 endif
+
+"HandmadeHero build script
+" Thanks to https://forums.handmadehero.org/index.php/forum?view=topic&catid=4&id=704#3982
+" error message formats
+" Microsoft MSBuild
+set errorformat+=\\\ %#%f(%l\\\,%c):\ %m
+" Microsoft compiler: cl.exe
+set errorformat+=\\\ %#%f(%l)\ :\ %#%t%[A-z]%#\ %m
+" Microsoft HLSL compiler: fxc.exe
+set errorformat+=\\\ %#%f(%l\\\,%c-%*[0-9]):\ %#%t%[A-z]%#\ %m
+ 
+function! DoBuildBatchFile()
+    " build.bat
+    set makeprg=build
+    " Make sure the output doesnt interfere with anything
+    silent make
+    " Open the output buffer
+    copen
+    echo 'Build Complete'
+endfunction
+ 
+" Set F7 to build. I like this since I use visual studio with the c++ build env
+nnoremap <F5> :call DoBuildBatchFile()<CR>
+ 
+"Go to previous error
+nnoremap <F6> :cp<CR>
+"Go to next error
+nnoremap <F7> :cn<CR>
+
+"Set filetype to lua 
+nnoremap <F9> :set syntax=lua<CR>
