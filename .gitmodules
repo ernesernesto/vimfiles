@@ -16,7 +16,9 @@
 [submodule "bundle/vim-fugitive-master"]
 	path = bundle/vim-fugitive-master
 	url = https://github.com/tpope/vim-fugitive
-		
+[submodule "bundle/visincr-master"]
+	path = bundle/visincr-master
+	url = https://github.com/vim-scripts/VisIncr.git	
 [submodule "bundle/ag.vim"]
 	path = bundle/ag.vim
 	url = https://github.com/rking/ag.vim.git
