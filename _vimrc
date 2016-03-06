@@ -64,8 +64,13 @@ nnoremap k gk
 nnoremap h <C-h>
 nnoremap l <space>
 
+"Paragraph movement
 nnoremap [ {
 nnoremap ] }
+
+"Move to end and beginning of line
+nnoremap 9 $
+nnoremap 8 0
 
 nnoremap <S-y> y%
 
@@ -136,7 +141,7 @@ map <C-K><C-K> <leader>ci
 "########################
 "Color & Font settings
 "########################
-colorscheme monokai 
+colorscheme monokai
 
 set guifont=Consolas_for_Powerline_FixedD
 
