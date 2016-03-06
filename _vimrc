@@ -7,6 +7,7 @@ execute pathogen#infect()
 filetype plugin indent on
 set nocompatible
 set encoding=utf-8
+set virtualedit=all
 syntax on
 
 "use system clipboard as default buffer
@@ -137,6 +138,9 @@ nnoremap <leader>f :Ag -i -Q
 
 "NerdCommenter
 map <C-K><C-K> <leader>ci
+
+"Fugitive
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 "########################
 "Color & Font settings
