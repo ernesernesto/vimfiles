@@ -22,6 +22,6 @@
 [submodule "bundle/nerdcommenter"]
 	path = bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter
-[submodule "bundle/vim-perforce"]
-	path = bundle/vim-perforce
-	url = https://github.com/nfvs
+[submodule "bundle/youcompleteme"]
+	path = bundle/youcompleteme
+	url = https://github.com/Valloric/YouCompleteMe.git
