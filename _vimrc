@@ -145,6 +145,10 @@ nnoremap <leader>f :Ag -i -Q
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
 "YouCompleteMe
+nnoremap <C-g> :YcmCompleter GoTo<CR>
+nnoremap <C-f> :YcmCompleter GetDoc<CR>
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
 let g:ycm_show_diagnostics_ui = 0 
 
 "########################
