@@ -1,3 +1,5 @@
+let g:pathogen_disabled = ['nerdcommenter']
+
 "Pathogen first
 execute pathogen#infect()
 
@@ -64,14 +66,14 @@ nnoremap j gj
 nnoremap k gk
 nnoremap h <C-h>
 nnoremap l <space>
-
-"Paragraph movement
-nnoremap [ {
-nnoremap ] }
-
+map <C-j> }
+map <C-k> {
+map <C-h> F<Space>
+map <C-l> f<Space>
+ 
 "Move to end and beginning of line
-nnoremap 9 $
-nnoremap 8 0
+noremap <C-b> 0
+noremap <C-e> $
 
 nnoremap <S-y> y%
 
@@ -137,10 +139,13 @@ nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 nnoremap <leader>f :Ag -i -Q 
 
 "NerdCommenter
-map <C-K><C-K> <leader>ci
+"map <C-K><C-K> <leader>ci
 
 "Fugitive
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
+"YouCompleteMe
+let g:ycm_show_diagnostics_ui = 0 
 
 "########################
 "Color & Font settings
