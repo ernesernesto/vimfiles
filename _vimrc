@@ -1,4 +1,5 @@
 let g:pathogen_disabled = ['nerdcommenter']
+"let g:pathogen_disabled = ['youcompleteme']
 
 "Pathogen first
 execute pathogen#infect()
@@ -51,7 +52,9 @@ set guioptions-=b
 "Make it full screen
 set lines=999
 set columns=999
-au GUIEnter * simalt ~x
+if has("win32")
+    au GUIEnter * simalt ~x
+endif
 
 set switchbuf=useopen,split
 
@@ -70,12 +73,15 @@ map <C-j> }
 map <C-k> {
 map <C-h> F<Space>
 map <C-l> f<Space>
- 
+
 "Move to end and beginning of line
 noremap <C-b> 0
 noremap <C-e> $
 
 nnoremap <S-y> y%
+
+"Delete surrounding spaces
+nnoremap <leader>ds F<space>xf<space>x
 
 "Exit from insert mode using jk
 inoremap jk <ESC>
@@ -103,7 +109,7 @@ map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 "########################
 
 "NERDTree
-noremap <F2> :NERDTreeToggle<CR>
+noremap <F1> :NERDTreeToggle<CR>
 
 "CTags 
 map <F12> :!start /min ctags -R .<CR>
@@ -136,13 +142,22 @@ set laststatus=2
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 "Ag
-nnoremap <leader>f :Ag -i -Q 
+nnoremap <leader>f :Ag -i --ignore=*.pbxproj -Q 
 
 "NerdCommenter
 "map <C-K><C-K> <leader>ci
 
+"NoEOL
+let g:PreserveNoEOL = 1 
+
 "Fugitive
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+map <F2>  [c
+map <F3>  ]c
+nnoremap <F9>  :Gblame<CR>
+nnoremap <F10> :Gstatus<CR>
+nnoremap <F11> :Gvdiff<CR>
+nnoremap <F12> :Gread<CR>
 
 "YouCompleteMe
 nnoremap <C-g> :YcmCompleter GoTo<CR>
@@ -151,12 +166,15 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_show_diagnostics_ui = 0 
 
+"Omnisharp
+set omnifunc=syntaxcomplete#Complete
+
 "########################
 "Color & Font settings
 "########################
 colorscheme monokai
 
-set guifont=Consolas_for_Powerline_FixedD
+set guifont=Consolas_for_Powerline_FixedD:h12
 
 "Transparency
 "autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
@@ -195,4 +213,10 @@ nnoremap <F6> :cp<CR>
 nnoremap <F7> :cn<CR>
 
 "Set filetype to lua 
-nnoremap <F9> :set syntax=lua<CR>
+"nnoremap <F1> :set syntax=lua<CR>
+
+if has("gui_macvim")
+    set guifont=Consolas_for_Powerline_FixedD:h12
+endif
+
+
