@@ -28,3 +28,6 @@
 [submodule "bundle/vim-perforce"]
 	path = bundle/vim-perforce
 	url = https://github.com/nfvs/vim-perforce.git
+[submodule "bundle/vim-lldb"]
+	path = bundle/vim-lldb
+	url = https://github.com/gilligan/vim-lldb.git
