@@ -31,9 +31,6 @@
 [submodule "bundle/vim-lldb"]
 	path = bundle/vim-lldb
 	url = https://github.com/gilligan/vim-lldb.git
-[submodule "bundle/omnisharp-vim"]
-	path = bundle/omnisharp-vim
-	url = https://github.com/OmniSharp/omnisharp-vim
 [submodule "bundle/vim-dispatch"]
 	path = bundle/vim-dispatch
 	url = https://github.com/tpope/vim-dispatch
