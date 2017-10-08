@@ -31,6 +31,7 @@ set scrolloff=3
 set wrap
 set autoindent
 set nonumber
+set showmatch
 
 "Tab behaviour
 set tabstop=4 
@@ -101,6 +102,9 @@ nnoremap gb :ls<CR>:b<Space>
 "Quick edit vimrc 
 :nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 
+"Delete surrounding blankspace
+nnoremap <leader>d F<space>xf<space>x
+
 "Quick switch between .h and .cpp
 map <F4> :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 
@@ -147,6 +151,12 @@ nnoremap <leader>f :Ag -i --ignore=*.pbxproj -Q
 "NerdCommenter
 "map <C-K><C-K> <leader>ci
 
+"CTRL-P
+let g:ctrlp_max_files=0
+let g:ctrlp_by_filename = 1
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
 "NoEOL
 let g:PreserveNoEOL = 1 
 
@@ -167,7 +177,7 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_show_diagnostics_ui = 0 
 
 "Omnisharp
-set omnifunc=syntaxcomplete#Complete
+"set omnifunc=syntaxcomplete#Complete
 
 "########################
 "Color & Font settings
@@ -218,5 +228,3 @@ nnoremap <F7> :cn<CR>
 if has("gui_macvim")
     set guifont=Consolas_for_Powerline_FixedD:h12
 endif
-
-
