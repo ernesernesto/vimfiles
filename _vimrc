@@ -146,7 +146,11 @@ set laststatus=2
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 "Ag
-nnoremap <leader>f :Ag -i --ignore=*.pbxproj -Q 
+"nnoremap <leader>f :Ag -i --ignore=*.pbxproj -Q 
+"nnoremap <leader>f :Ag -i -Q 
+
+"Rg
+nnoremap <leader>f :Rg -i
 
 "NerdCommenter
 "map <C-K><C-K> <leader>ci
@@ -164,6 +168,7 @@ let g:PreserveNoEOL = 1
 set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 map <F2>  [c
 map <F3>  ]c
+nnoremap <F8>  :Gedit branch:%
 nnoremap <F9>  :Gblame<CR>
 nnoremap <F10> :Gstatus<CR>
 nnoremap <F11> :Gvdiff<CR>
