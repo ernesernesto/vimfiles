@@ -50,6 +50,10 @@ set guioptions-=l
 set guioptions-=r
 set guioptions-=b
 
+"Flag bad whitespaces
+highlight BadWhitespace ctermbg=red guibg=red
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
 "Make it full screen
 set lines=999
 set columns=999
@@ -150,7 +154,7 @@ nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 "nnoremap <leader>f :Ag -i -Q 
 
 "Rg
-nnoremap <leader>f :Rg -i
+nnoremap <leader>f :Rg 
 
 "NerdCommenter
 "map <C-K><C-K> <leader>ci
@@ -175,11 +179,12 @@ nnoremap <F11> :Gvdiff<CR>
 nnoremap <F12> :Gread<CR>
 
 "YouCompleteMe
-nnoremap <C-g> :YcmCompleter GoTo<CR>
+nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <C-f> :YcmCompleter GetDoc<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_show_diagnostics_ui = 0 
+let g:ycm_autoclose_preview_window_after_completion=1
 
 "Omnisharp
 "set omnifunc=syntaxcomplete#Complete
