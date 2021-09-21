@@ -72,7 +72,7 @@ let mapleader=","
 "Keyboard movement
 nnoremap j gj
 nnoremap k gk
-nnoremap h <C-h>
+"nnoremap h <C-h>
 nnoremap l <space>
 map <C-j> }
 map <C-k> {
@@ -151,10 +151,10 @@ nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 "Ag
 "nnoremap <leader>f :Ag -i --ignore=*.pbxproj -Q 
-"nnoremap <leader>f :Ag -i -Q 
+nnoremap <leader>f :Ag -i -Q 
 
 "Rg
-nnoremap <leader>f :Rg 
+"nnoremap <leader>f :Rg 
 
 "NerdCommenter
 "map <C-K><C-K> <leader>ci
@@ -175,24 +175,60 @@ map <F3>  ]c
 nnoremap <F8>  :Gedit branch:%
 nnoremap <F9>  :Gblame<CR>
 nnoremap <F10> :Gstatus<CR>
-nnoremap <F11> :Gvdiff<CR>
+nnoremap <F11> :Gvdiffsplit!<CR>
 nnoremap <F12> :Gread<CR>
-
-"YouCompleteMe
-nnoremap <C-g> :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <C-f> :YcmCompleter GetDoc<CR>
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_show_diagnostics_ui = 0 
-let g:ycm_autoclose_preview_window_after_completion=1
 
 "Omnisharp
 "set omnifunc=syntaxcomplete#Complete
 
+" Go Settings
+autocmd FileType go nmap <F5> <Plug>(go-build)
+let g:go_addtags_transform = "camelcase"
+
+"" zig settings
+"autocmd BufNewFile,BufRead *.zig set filetype=zig
+"let g:ycm_language_server =
+"  \ [
+"  \{
+"  \     'name': 'zls',
+"  \     'filetypes': [ 'zig' ],
+"  \     'cmdline': [ '~/zls/zls' ]
+"  \}
+
+" ********
+" coc settings
+set updatetime=300
+set shortmess+=c
+set nowritebackup
+
+autocmd FileType zig inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+autocmd FileType zig inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+autocmd FileType inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+autocmd FileType zig nmap <C-g> <Plug>(coc-definition)
+autocmd FileType zig nmap <C-f> <Plug>(coc-references)
+" ********
+
+" python format with black
+"autocmd BufWritePre *.py execute ':Black'
+
+"YouCompleteMe
+nnoremap <C-g> :YcmCompleter GoTo<CR>
+nnoremap <C-f> :YcmCompleter GetDoc<CR>
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_show_diagnostics_ui = 0 
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_auto_hover = ''
+
+"Go to prev/next error
+nnoremap <F6> :cp<CR>
+nnoremap <F7> :cn<CR>
+
 "########################
 "Color & Font settings
 "########################
-colorscheme monokai
+colorscheme molokai
 
 set guifont=Consolas_for_Powerline_FixedD:h12
 
@@ -203,37 +239,6 @@ set guifont=Consolas_for_Powerline_FixedD:h12
 if has("gui_running")
     autocmd GUIEnter * set vb t_vb=
 endif
-
-"HandmadeHero build script
-" Thanks to https://forums.handmadehero.org/index.php/forum?view=topic&catid=4&id=704#3982
-" error message formats
-" Microsoft MSBuild
-set errorformat+=\\\ %#%f(%l\\\,%c):\ %m
-" Microsoft compiler: cl.exe
-set errorformat+=\\\ %#%f(%l)\ :\ %#%t%[A-z]%#\ %m
-" Microsoft HLSL compiler: fxc.exe
-set errorformat+=\\\ %#%f(%l\\\,%c-%*[0-9]):\ %#%t%[A-z]%#\ %m
- 
-function! DoBuildBatchFile()
-    " build.bat
-    set makeprg=build
-    " Make sure the output doesnt interfere with anything
-    silent make
-    " Open the output buffer
-    copen
-    echo 'Build Complete'
-endfunction
- 
-" Set F7 to build. I like this since I use visual studio with the c++ build env
-nnoremap <F5> :call DoBuildBatchFile()<CR>
- 
-"Go to previous error
-nnoremap <F6> :cp<CR>
-"Go to next error
-nnoremap <F7> :cn<CR>
-
-"Set filetype to lua 
-"nnoremap <F1> :set syntax=lua<CR>
 
 if has("gui_macvim")
     set guifont=Consolas_for_Powerline_FixedD:h12
