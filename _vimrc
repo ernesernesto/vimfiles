@@ -230,7 +230,7 @@ nnoremap <F7> :cn<CR>
 "########################
 colorscheme molokai
 
-set guifont=ConsolasForPowerline:h12
+"set guifont=Consolas_for_Powerline_FixedD:h12
 
 "Transparency
 "autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
@@ -242,4 +242,6 @@ endif
 
 if has("gui_macvim")
     set guifont=ConsolasForPowerline:h12
+elseif has("gui_win32")
+    set guifont=Powerline\ Consolas:h12
 endif
