@@ -173,8 +173,8 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 map <F2>  [c
 map <F3>  ]c
 nnoremap <F8>  :Gedit branch:%
-nnoremap <F9>  :Gblame<CR>
-nnoremap <F10> :Gstatus<CR>
+nnoremap <F9>  :Git blame<CR>
+nnoremap <F10> :Git<CR>
 nnoremap <F11> :Gvdiffsplit!<CR>
 nnoremap <F12> :Gread<CR>
 
@@ -201,12 +201,12 @@ set updatetime=300
 set shortmess+=c
 set nowritebackup
 
-autocmd FileType zig inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+autocmd FileType zig,odin inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-autocmd FileType zig inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+autocmd FileType zig,odin inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 autocmd FileType inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-autocmd FileType zig nmap <C-g> <Plug>(coc-definition)
-autocmd FileType zig nmap <C-f> <Plug>(coc-references)
+autocmd FileType zig,odin nmap <C-g> <Plug>(coc-definition)
+autocmd FileType zig,odin nmap <C-f> <Plug>(coc-references)
 " ********
 
 " python format with black
@@ -230,7 +230,7 @@ nnoremap <F7> :cn<CR>
 "########################
 colorscheme molokai
 
-set guifont=Consolas_for_Powerline_FixedD:h12
+set guifont=ConsolasForPowerline:h12
 
 "Transparency
 "autocmd GUIEnter * call libcallnr("vimtweak.dll", "SetAlpha", 245)
@@ -241,5 +241,5 @@ if has("gui_running")
 endif
 
 if has("gui_macvim")
-    set guifont=Consolas_for_Powerline_FixedD:h12
+    set guifont=ConsolasForPowerline:h12
 endif
