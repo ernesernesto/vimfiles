@@ -49,3 +49,9 @@
 [submodule "bundle/odin.vim"]
 	path = bundle/odin.vim
 	url = https://github.com/Tetralux/odin.vim.git
+[submodule "bundle/vim-godot"]
+	path = bundle/vim-godot
+	url = https://github.com/habamax/vim-godot
+[submodule "bundle/vaxe"]
+	path = bundle/vaxe
+	url = https://github.com/jdonaldson/vaxe
