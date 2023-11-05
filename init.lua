@@ -45,10 +45,14 @@ require('lazy').setup({
     {
         -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
-        dependencies = {
+        dependencies =
+        {
             -- Automatically install LSPs to stdpath for neovim
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
+
+            -- Mason automatic tool installer
+            'WhoIsSethDaniel/mason-tool-installer.nvim',
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -58,7 +62,7 @@ require('lazy').setup({
                 opts = {},
             },
 
-            -- Additional lua configuration, makes nvim stuff amazing!
+            -- Additional lua configuration
             'folke/neodev.nvim',
         },
     },
@@ -66,23 +70,34 @@ require('lazy').setup({
     {
         -- Autocompletion
         'hrsh7th/nvim-cmp',
-        dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+        dependencies =
+        {
+            'hrsh7th/cmp-nvim-lsp',
+            'L3MON4D3/LuaSnip',
+            'saadparwaiz1/cmp_luasnip'
+        },
     },
 
-    { -- Tree File Viewer
+    {
+        -- Tree File Viewer
         'nvim-tree/nvim-tree.lua',
     },
 
-    { -- Terminal
-        'akinsho/toggleterm.nvim', version = "*", config = true
+    {
+        -- Terminal
+        'akinsho/toggleterm.nvim',
+        version = "*",
+        config = true
     },
 
     {
         -- Adds git releated signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
-        opts = {
+        opts =
+        {
             -- See `:help gitsigns.txt`
-            signs = {
+            signs =
+            {
                 add = { text = '+' },
                 change = { text = '~' },
                 delete = { text = '_' },
@@ -97,8 +112,10 @@ require('lazy').setup({
         -- Set lualine as statusline
         'nvim-lualine/lualine.nvim',
         -- See `:help lualine.txt`
-        opts = {
-            options = {
+        opts =
+        {
+            options =
+            {
                 icons_enabled = false,
                 theme = 'onedark',
                 component_separators = '|',
@@ -108,22 +125,7 @@ require('lazy').setup({
     },
 
     {
-        -- Add indentation guides even on blank lines
-        'lukas-reineke/indent-blankline.nvim',
-        -- Enable `lukas-reineke/indent-blankline.nvim`
-        -- See `:help indent_blankline.txt`
-        opts = {
-            char = '┊',
-            show_trailing_blankline_indent = false,
-        },
-    },
-
-    { -- "gc" to comment visual regions/lines
-        'numToStr/Comment.nvim', opts = {}
-    },
-
-    -- Fuzzy Finder (files, lsp, etc)
-    {
+        -- Fuzzy Finder (files, lsp, etc)
         'nvim-telescope/telescope.nvim',
         version = '*',
         dependencies =
@@ -136,10 +138,10 @@ require('lazy').setup({
         end
     },
 
-    -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-    -- Only load if `make` is available. Make sure you have the system
-    -- requirements installed.
     {
+        -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+        -- Only load if `make` is available. Make sure you have the system
+        -- requirements installed.
         'nvim-telescope/telescope-fzf-native.nvim',
         -- NOTE: If you are having trouble with this installation,
         --       refer to the README for telescope-fzf-native for more instructions.
@@ -159,7 +161,8 @@ require('lazy').setup({
     {
         -- Highlight, edit, and navigate code
         'nvim-treesitter/nvim-treesitter',
-        dependencies = {
+        dependencies =
+        {
             'nvim-treesitter/nvim-treesitter-textobjects',
         },
         config = function()
@@ -384,9 +387,8 @@ end
 
 -- Enable the following language servers
 local servers = {
-    -- clangd = {},
-    -- omnisharp = {},
-
+    clangd = {},
+    omnisharp = {},
     lua_ls = {
         Lua = {
             workspace = { checkThirdParty = false },
@@ -420,6 +422,19 @@ mason_lspconfig.setup_handlers {
             settings = servers[server_name],
         }
     end,
+}
+
+-- Ensure tools that mason needed is installed
+require('mason-tool-installer').setup {
+    ensure_installed = {
+        "clang-format",
+        "clangd",
+        "lua-language-server",
+        "omnisharp",
+        "python-lsp-server",
+    },
+    auto_update = false,
+    run_on_start = true,
 }
 
 -- nvim-cmp setup
@@ -502,8 +517,6 @@ require("nvim-tree").setup({
         enable = false,
     }
 })
-
--- NvimTree
 vim.keymap.set('n', '<F1>', ":NvimTreeToggle<CR>")
 
 -- Vim Fugitive
