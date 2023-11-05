@@ -525,3 +525,7 @@ vim.keymap.set('n', '<F9>', ":Git blame<CR>")
 vim.keymap.set('n', '<F10>', ":Git<CR>")
 vim.keymap.set('n', '<F11>', ":Gvdiffsplit!<CR>")
 vim.keymap.set('n', '<F12>', ":Gread<CR>")
+
+-- Go to Prev and Next error
+vim.keymap.set("n", "1", "<ESC><CMD>lua vim.diagnostic.goto_prev()<CR>", {})
+vim.keymap.set("n", "2", "<ESC><CMD>lua vim.diagnostic.goto_next()<CR>", {})
