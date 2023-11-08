@@ -13,10 +13,17 @@ vim.g.loaded_netrwPlugin = 1
 
 -- Autoformat after save
 vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = '*',
+    pattern = '*.cpp, *.c',
     callback = function()
         vim.lsp.buf.format()
     end,
+})
+
+-- Autoreload file when changed outside neovim
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = { "*" },
 })
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
