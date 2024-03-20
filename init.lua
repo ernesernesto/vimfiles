@@ -1,6 +1,8 @@
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
+vim.g.ffs = 'unix,dos'
+
 -- Disable netrw, recommended for nvim-tree
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -48,6 +50,9 @@ require('lazy').setup({
 
     -- Color, easy for eyes
     "rebelot/kanagawa.nvim",
+
+    -- Ripgrep
+    'mangelozzi/rgflow.nvim',
 
     {
         -- LSP Configuration & Plugins
@@ -114,7 +119,6 @@ require('lazy').setup({
         },
     },
 
-
     {
         -- Set lualine as statusline
         'nvim-lualine/lualine.nvim',
@@ -150,12 +154,17 @@ require('lazy').setup({
         -- Only load if `make` is available. Make sure you have the system
         -- requirements installed.
         'nvim-telescope/telescope-fzf-native.nvim',
+
         -- NOTE: If you are having trouble with this installation,
         --       refer to the README for telescope-fzf-native for more instructions.
-        build = 'make',
-        cond = function()
-            return vim.fn.executable 'make' == 1
-        end,
+        -- Windows Build
+        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' 
+
+        -- OSX Build
+        --build = 'make',
+        --cond = function()
+        --    return vim.fn.executable 'make' == 1
+        --end,
     },
 
     {
@@ -293,7 +302,7 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 
 vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files)
-vim.keymap.set('n', '<leader>f', require("telescope").extensions.live_grep_args.live_grep_args)
+--vim.keymap.set('n', '<leader>f', require("telescope").extensions.live_grep_args.live_grep_args)
 vim.keymap.set('n', '<leader>/', function()
     require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
         winblend = 10,
@@ -306,7 +315,8 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'c_sharp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
+    --osx, windows have issues installing help ensure_installed = { 'c', 'cpp', 'c_sharp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
+    ensure_installed = { 'c', 'cpp', 'c_sharp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vim' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -524,14 +534,37 @@ require("nvim-tree").setup({
         enable = false,
     }
 })
-vim.keymap.set('n', '<F1>', ":NvimTreeToggle<CR>")
 
--- Vim Fugitive
-vim.keymap.set('n', '<F8>', ":Gedit branch:%")
-vim.keymap.set('n', '<F9>', ":Git blame<CR>")
-vim.keymap.set('n', '<F10>', ":Git<CR>")
-vim.keymap.set('n', '<F11>', ":Gvdiffsplit!<CR>")
-vim.keymap.set('n', '<F12>', ":Gread<CR>")
+-- Ripgrep
+require('rgflow').setup({
+    -- Set the default rip grep flags and options for when running a search via
+    -- RgFlow. Once changed via the UI, the previous search flags are used for 
+    -- each subsequent search (until Neovim restarts).
+    cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
+
+    -- Mappings to trigger RgFlow functions
+    default_trigger_mappings = true,
+
+    -- These mappings are only active when the RgFlow UI (panel) is open
+    default_ui_mappings = true,
+
+    -- QuickFix window only mapping
+    default_quickfix_mappings = true,
+    mappings = {
+        trigger = {
+                n = { ["<leader>f"] = "open_cword", },
+        }
+    },
+})
+
+vim.keymap.set('n', '<C-F1>', ":NvimTreeToggle<CR>")
+                        
+-- Vim Fugitive         
+vim.keymap.set('n', '<C-F8>', ":Gedit branch:%")
+vim.keymap.set('n', '<C-F9>', ":Git blame<CR>")
+vim.keymap.set('n', '<C-F10>', ":Git<CR>")
+vim.keymap.set('n', '<C-F11>', ":Gvdiffsplit!<CR>")
+vim.keymap.set('n', '<C-F12>', ":Gread<CR>")
 
 -- Go to Prev and Next error
 vim.keymap.set("n", "1", "<ESC><CMD>lua vim.diagnostic.goto_prev()<CR>", {})
