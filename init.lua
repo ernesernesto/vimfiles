@@ -388,11 +388,11 @@ local on_attach = function(_, bufnr)
         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
     end
 
-    nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-    nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-    nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+    nmap('<leader>d', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    --nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    --nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
     nmap('<leader>r', require('telescope.builtin').lsp_references, 'Goto References')
-    nmap('<leader>d', vim.lsp.buf.type_definition, 'Type [D]efinition')
+    --nmap('<leader>d', vim.lsp.buf.type_definition, 'Type [D]efinition')
     nmap('<leader>s', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
     nmap('<leader>w', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
@@ -411,6 +411,15 @@ local servers = {
             workspace = { checkThirdParty = false },
             telemetry = { enable = false },
         },
+    },
+    pylsp = {
+        pylsp = {
+           plugins = {
+            pycodestyle = {
+              ignore = {'W291', 'W293'},
+            }
+          }
+        }
     },
 }
 
@@ -449,6 +458,7 @@ require('mason-tool-installer').setup {
         "lua-language-server",
         "omnisharp",
         "python-lsp-server",
+        "gopls",
     },
     auto_update = false,
     run_on_start = true,
