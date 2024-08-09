@@ -15,7 +15,7 @@ vim.g.loaded_netrwPlugin = 1
 
 -- Autoformat after save
 vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = '*.cpp, *.c',
+    pattern = { "*.cpp", "*.c", "*.h", "*.ts", "*.lua" },
     callback = function()
         vim.lsp.buf.format()
     end,
@@ -24,8 +24,8 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 -- Autoreload file when changed outside neovim
 vim.o.autoread = true
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
-  command = "if mode() != 'c' | checktime | endif",
-  pattern = { "*" },
+    command = "if mode() != 'c' | checktime | endif",
+    pattern = { "*" },
 })
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -158,7 +158,8 @@ require('lazy').setup({
         -- NOTE: If you are having trouble with this installation,
         --       refer to the README for telescope-fzf-native for more instructions.
         -- Windows Build
-        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' 
+        build =
+        'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
 
         -- OSX Build
         --build = 'make',
@@ -378,8 +379,9 @@ require('nvim-treesitter.configs').setup {
     },
 }
 
+
 -- LSP settings.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
     local nmap = function(keys, func, desc)
         if desc then
             desc = 'LSP: ' .. desc
@@ -406,19 +408,15 @@ end
 local servers = {
     clangd = {},
     omnisharp = {},
-    lua_ls = {
-        Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-        },
-    },
+    lua_ls = {},
+    tsserver = {},
     pylsp = {
         pylsp = {
-           plugins = {
-            pycodestyle = {
-              ignore = {'W291', 'W293'},
+            plugins = {
+                pycodestyle = {
+                    ignore = { 'W291', 'W293' },
+                }
             }
-          }
         }
     },
 }
@@ -455,10 +453,11 @@ require('mason-tool-installer').setup {
     ensure_installed = {
         "clang-format",
         "clangd",
-        "lua-language-server",
         "omnisharp",
         "python-lsp-server",
         "gopls",
+        "lua-language-server",
+        "typescript-language-server",
     },
     auto_update = false,
     run_on_start = true,
@@ -548,7 +547,7 @@ require("nvim-tree").setup({
 -- Ripgrep
 require('rgflow').setup({
     -- Set the default rip grep flags and options for when running a search via
-    -- RgFlow. Once changed via the UI, the previous search flags are used for 
+    -- RgFlow. Once changed via the UI, the previous search flags are used for
     -- each subsequent search (until Neovim restarts).
     cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
 
@@ -562,14 +561,14 @@ require('rgflow').setup({
     default_quickfix_mappings = true,
     mappings = {
         trigger = {
-                n = { ["<leader>f"] = "open_cword", },
+            n = { ["<leader>f"] = "open_blank", },
         }
     },
 })
 
 vim.keymap.set('n', '<C-F1>', ":NvimTreeToggle<CR>")
-                        
--- Vim Fugitive         
+
+-- Vim Fugitive
 vim.keymap.set('n', '<C-F8>', ":Gedit branch:%")
 vim.keymap.set('n', '<C-F9>', ":Git blame<CR>")
 vim.keymap.set('n', '<C-F10>', ":Git<CR>")
