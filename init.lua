@@ -587,3 +587,5 @@ vim.keymap.set('n', '<C-F12>', ":Gread<CR>")
 -- Go to Prev and Next error
 vim.keymap.set("n", "1", "<ESC><CMD>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.keymap.set("n", "2", "<ESC><CMD>lua vim.diagnostic.goto_next()<CR>", {})
+
+vim.lsp.set_log_level("off")
