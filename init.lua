@@ -60,9 +60,6 @@ require('lazy').setup({
     -- Color, easy for eyes
     "rebelot/kanagawa.nvim",
 
-    -- Ripgrep
-    'mangelozzi/rgflow.nvim',
-
     {
         -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
@@ -145,36 +142,43 @@ require('lazy').setup({
     },
 
     {
-        -- Fuzzy Finder (files, lsp, etc)
-        'nvim-telescope/telescope.nvim',
-        version = '*',
-        dependencies =
-        {
-            'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope-live-grep-args.nvim',
-        },
+        "ibhagwan/fzf-lua",
+        -- optional for icon support
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         config = function()
-            require("telescope").load_extension("live_grep_args")
+            -- calling `setup` is optional for customization
+            local actions = require("fzf-lua.actions")
+            require("fzf-lua").setup({
+                files = {
+                    git_icons = false,
+                    file_icons = false,
+                    color_icons = false,
+                },
+                git = {
+                    status = {
+                        git_icons = false,
+                        file_icons = false,
+                    },
+                },
+                grep = {
+                    git_icons = false,
+                    file_icons = false,
+                    color_icons = false,
+                },
+                winopts = {
+                    fullscreen = true,
+                    preview = {
+                        layout = "vertical",
+                    },
+                },
+                actions = {
+                    files = {
+                        true,
+                        ["ctrl-x"] = actions.file_split,
+                    },
+                },
+            })
         end
-    },
-
-    {
-        -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-        -- Only load if `make` is available. Make sure you have the system
-        -- requirements installed.
-        'nvim-telescope/telescope-fzf-native.nvim',
-
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
-        -- Windows Build
-        build =
-        'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
-
-        -- OSX Build
-        --build = 'make',
-        --cond = function()
-        --    return vim.fn.executable 'make' == 1
-        --end,
     },
 
     {
@@ -292,34 +296,9 @@ vim.keymap.set("", "<F4>", ":e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 vim.keymap.set("n", "<C-t>", ":ToggleTerm direction=float<CR>")
 vim.keymap.set("v", "<C-t>", ":ToggleTerm direction=float<CR>")
 
--- [[ Configure Telescope ]]
-local actions = require("telescope.actions")
-require('telescope').setup {
-    defaults = {
-        layout_strategy = 'horizontal',
-        layout_config = { width = 0.99 },
-        mappings = {
-            i = {
-                ['<C-u>'] = false,
-                ['<C-d>'] = false,
-                ['<esc>'] = actions.close,
-            },
-        },
-    },
-}
-
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
-
-vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files)
---vim.keymap.set('n', '<leader>f', require("telescope").extensions.live_grep_args.live_grep_args)
-vim.keymap.set('n', '<leader>/', function()
-    require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        winblend = 10,
-        previewer = false,
-    })
-end, { desc = '[/] Fuzzily search in current buffer' })
-
+-- Fzf-lua
+vim.keymap.set("n", "<C-p>", require('fzf-lua').files, { desc = "Fzf Files" })
+vim.keymap.set('n', '<leader>f', require('fzf-lua').live_grep)
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -399,13 +378,14 @@ local on_attach = function(client, bufnr)
         vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
     end
 
-    nmap('<leader>d', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    --nmap('<leader>d', vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap('<leader>d', require('fzf-lua').lsp_definitions, '[G]oto [D]efinition')
     --nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
     --nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-    nmap('<leader>r', require('telescope.builtin').lsp_references, 'Goto References')
+    nmap('<leader>r', require('fzf-lua').lsp_references, 'Goto References')
     --nmap('<leader>d', vim.lsp.buf.type_definition, 'Type [D]efinition')
-    nmap('<leader>s', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>w', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    nmap('<leader>s', require('fzf-lua').lsp_document_symbols, '[D]ocument [S]ymbols')
+    nmap('<leader>w', require('fzf-lua').lsp_workspace_symbols, '[W]orkspace [S]ymbols')
 
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
@@ -553,36 +533,14 @@ require("nvim-tree").setup({
     }
 })
 
--- Ripgrep
-require('rgflow').setup({
-    -- Set the default rip grep flags and options for when running a search via
-    -- RgFlow. Once changed via the UI, the previous search flags are used for
-    -- each subsequent search (until Neovim restarts).
-    cmd_flags = "--smart-case --fixed-strings --ignore --max-columns 200",
-
-    -- Mappings to trigger RgFlow functions
-    default_trigger_mappings = true,
-
-    -- These mappings are only active when the RgFlow UI (panel) is open
-    default_ui_mappings = true,
-
-    -- QuickFix window only mapping
-    default_quickfix_mappings = true,
-    mappings = {
-        trigger = {
-            n = { ["<leader>f"] = "open_blank", },
-        }
-    },
-})
-
-vim.keymap.set('n', '<C-F1>', ":NvimTreeToggle<CR>")
+vim.keymap.set('n', '<F1>', ":NvimTreeToggle<CR>")
 
 -- Vim Fugitive
-vim.keymap.set('n', '<C-F8>', ":Gedit branch:%")
-vim.keymap.set('n', '<C-F9>', ":Git blame<CR>")
-vim.keymap.set('n', '<C-F10>', ":Git<CR>")
-vim.keymap.set('n', '<C-F11>', ":Gvdiffsplit!<CR>")
-vim.keymap.set('n', '<C-F12>', ":Gread<CR>")
+vim.keymap.set('n', '<F8>', ":Gedit branch:%")
+vim.keymap.set('n', '<F9>', ":Git blame<CR>")
+vim.keymap.set('n', '<F10>', ":Git<CR>")
+vim.keymap.set('n', '<F11>', ":Gvdiffsplit!<CR>")
+vim.keymap.set('n', '<F12>', ":Gread<CR>")
 
 -- Go to Prev and Next error
 vim.keymap.set("n", "1", "<ESC><CMD>lua vim.diagnostic.goto_prev()<CR>", {})
